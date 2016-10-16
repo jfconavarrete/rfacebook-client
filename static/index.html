@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <script data-require="jquery@*" data-semver="3.0.0" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.js"></script>
+  <script data-require="highcharts@*" data-semver="4.2.4" src="https://code.highcharts.com/4.2.4/highcharts.js"></script>
+  <link rel="stylesheet" href="style.css" />
+  <script src="script.js"></script>
+</head>
+
+<body>
+  <div id="container"></div>
+
+  <script>
+    $(document).ready(function() {
+      $.get("http://localhost:8080/page", function(data, status){
+        pages = []
+        likes = []
+
+        data.forEach(function(entry) {
+          pages.push(entry.name);
+          likes.push(entry.likes);
+        });
+
+        $('#container').highcharts({
+          chart: {
+              type: 'bar'
+          },
+          title: {
+              text: 'Likes per Page'
+          },
+          xAxis: {
+              categories: pages,
+              title: {
+                  text: null
+              }
+          },
+          yAxis: {
+              min: 0,
+              title: {
+                  text: 'Number of Likes',
+                  align: 'high'
+              },
+              labels: {
+                  overflow: 'justify'
+              }
+          },
+          plotOptions: {
+              bar: {
+                  dataLabels: {
+                      enabled: true
+                  }
+              }
+          },
+          credits: {
+              enabled: false
+          },
+          series: [{
+              name: 'Likes',
+              data: likes
+          }]
+        });
+      });
+    });
+  </script>
+</body>
+
+</html>
